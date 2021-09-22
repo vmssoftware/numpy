@@ -301,10 +301,10 @@ def CCompiler_compile(self, sources, output_dir=None, macros=None,
         cc_args += [
             '/STAND=C99',
             '/PREFIX_LIBRARY_ENTRIES=ALL_ENTRIES',
+            '/WARNINGS=DISABLE=ALL',
             ]
         if debug:
             cc_args += [
-                '/WARNINGS=DISABLE=ALL',
                 '/LIST',
                 '/SHOW=ALL',
             ]

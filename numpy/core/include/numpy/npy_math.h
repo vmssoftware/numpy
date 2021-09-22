@@ -236,6 +236,15 @@ double npy_spacing(double x);
  * IEEE 754 fpu handling. Those are guaranteed to be macros
  */
 
+#if defined(__VMS)
+    #ifndef fp_classify
+    #   ifdef fpclassify
+    #       define fp_classify(x)	(fpclassify(x))
+    #   else
+    #       error neither fpclassify(x) nor fpclassify(x) is defined
+    #   endif
+    #endif
+#endif
 /* use builtins to avoid function calls in tight loops
  * only available if npy_config.h is available (= numpys own build) */
 #if defined(__VMS)
