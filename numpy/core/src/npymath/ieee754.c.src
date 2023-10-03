@@ -683,7 +683,7 @@ void npy_set_floatstatus_invalid(void)
 
 #elif defined(_MSC_VER) || (defined(__osf__) && defined(__alpha)) || \
       defined (__UCLIBC__) || (defined(__arc__) && defined(__GLIBC__) || \
-      (defined(__VMS) && defined(__ia64__)) )
+      (defined(__VMS) && (defined(__ia64__) || defined(__x86_64__))) )
 
 /*
  * By using a volatile floating point value,
@@ -755,7 +755,9 @@ int npy_clear_floatstatus_barrier(char *param)
 }
 
 /*  OpenVMS  -------------------------------------------------------*/
-#elif defined(__VMS) && defined(__ia64__)
+#elif defined(__VMS)
+
+#if defined(__ia64__)
 
 #include <builtins.h>
 
@@ -789,6 +791,40 @@ int npy_clear_floatstatus_barrier(char *param)
 
     return fpstatus;
 }
+
+#elif defined (__x86_64__)
+
+#include <starlet.h>
+#include <ieeedef.h>
+
+int npy_get_floatstatus_barrier(char *param)
+{
+    unsigned __int64 fpstatus = 0;
+    sys$ieee_set_fp_control(0, 0, &fpstatus);
+    /*
+     * By using a volatile, the compiler cannot reorder this call
+     */
+    if (param != NULL) {
+        volatile char NPY_UNUSED(c) = *(char*)param;
+    }
+    return  ((IEEE$M_STATUS_DZE & fpstatus) ? NPY_FPE_DIVIDEBYZERO : 0) |
+            ((IEEE$M_STATUS_OVF & fpstatus) ? NPY_FPE_OVERFLOW : 0) |
+            ((IEEE$M_STATUS_UNF & fpstatus) ? NPY_FPE_UNDERFLOW : 0) |
+            ((IEEE$M_STATUS_INV & fpstatus) ? NPY_FPE_INVALID : 0);
+}
+
+int npy_clear_floatstatus_barrier(char *param)
+{
+    unsigned __int64 fpstatus = 0;
+    unsigned __int64 clear_mask = IEEE$M_STATUS_DZE | IEEE$M_STATUS_OVF | IEEE$M_STATUS_UNF | IEEE$M_STATUS_INV;
+    sys$ieee_set_fp_control(&clear_mask, 0, &fpstatus);
+    return  ((IEEE$M_STATUS_DZE & fpstatus) ? NPY_FPE_DIVIDEBYZERO : 0) |
+            ((IEEE$M_STATUS_OVF & fpstatus) ? NPY_FPE_OVERFLOW : 0) |
+            ((IEEE$M_STATUS_UNF & fpstatus) ? NPY_FPE_UNDERFLOW : 0) |
+            ((IEEE$M_STATUS_INV & fpstatus) ? NPY_FPE_INVALID : 0);
+}
+
+#endif
 
 /*  OSF/Alpha (Tru64)  ---------------------------------------------*/
 #elif defined(__osf__) && defined(__alpha)
