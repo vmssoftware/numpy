@@ -991,6 +991,7 @@ def configuration(parent_package='',top_path=None):
         join('src', 'umath', '_umath_tests.dispatch.c'),
         join('src', 'common', 'npy_cpu_features.c.src'),
         ],
+        libraries=LIBRARIES,
         extra_compile_args=EXTRA_COMPILE_ARGS,
         extra_link_args=EXTRA_LINK_ARGS
         )
@@ -1001,6 +1002,7 @@ def configuration(parent_package='',top_path=None):
 
     config.add_extension('_rational_tests',
                     sources=[join('src', 'umath', '_rational_tests.c.src')],
+                    libraries=LIBRARIES,
                     extra_compile_args=EXTRA_COMPILE_ARGS,
                     )
 
@@ -1010,6 +1012,7 @@ def configuration(parent_package='',top_path=None):
 
     config.add_extension('_struct_ufunc_tests',
                     sources=[join('src', 'umath', '_struct_ufunc_tests.c.src')],
+                    libraries=LIBRARIES,
                     extra_compile_args=EXTRA_COMPILE_ARGS,
                     )
 
@@ -1020,6 +1023,7 @@ def configuration(parent_package='',top_path=None):
 
     config.add_extension('_operand_flag_tests',
                     sources=[join('src', 'umath', '_operand_flag_tests.c.src')],
+                    libraries=LIBRARIES,
                     extra_compile_args=EXTRA_COMPILE_ARGS,
                     )
 
@@ -1044,6 +1048,7 @@ def configuration(parent_package='',top_path=None):
         join('src', '_simd', '_simd_easyintrin.inc'),
         join('src', '_simd', '_simd_vector.inc'),
     ], extra_compile_args=EXTRA_COMPILE_ARGS,
+       libraries=LIBRARIES,
     )
 
     config.add_subpackage('tests')
