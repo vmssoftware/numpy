@@ -21,7 +21,11 @@ extern "C" {
  * use in RandomState by copying to the legacy distributions source file.
  */
 #ifdef NP_RANDOM_LEGACY
+#ifdef __VMS
+#define RAND_INT_TYPE int
+#else
 #define RAND_INT_TYPE long
+#endif
 #define RAND_INT_MAX LONG_MAX
 #else
 #define RAND_INT_TYPE int64_t

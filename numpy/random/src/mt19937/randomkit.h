@@ -65,7 +65,11 @@
 #define RK_STATE_LEN 624
 
 typedef struct rk_state_ {
+#ifdef __VMS
+  unsigned int key[RK_STATE_LEN];
+#else
   unsigned long key[RK_STATE_LEN];
+#endif
   int pos;
   int has_gauss; /* !=0: gauss contains a gaussian deviate */
   double gauss;
@@ -78,11 +82,19 @@ typedef struct rk_state_ {
   int has_binomial; /* !=0: following parameters initialized for
                             binomial */
   double psave;
+#ifdef __VMS
+  int nsave;
+#else
   long nsave;
+#endif
   double r;
   double q;
   double fm;
+#ifdef __VMS
+  int m;
+#else
   long m;
+#endif
   double p1;
   double xm;
   double xl;

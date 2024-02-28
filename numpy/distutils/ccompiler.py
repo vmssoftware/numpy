@@ -306,7 +306,7 @@ def CCompiler_compile(self, sources, output_dir=None, macros=None,
         if debug:
             cc_args += [
                 '/LIST',
-                '/SHOW=ALL',
+                '/SHOW=EXP',
             ]
     display = "compile options: '%s'" % (' '.join(cc_args))
     if extra_postargs:

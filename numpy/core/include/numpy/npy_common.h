@@ -344,8 +344,13 @@ typedef unsigned PY_LONG_LONG npy_ulonglong;
 #    define NPY_ULONGLONG_SUFFIX(x)  (x##ULL)
 #  endif
 #else
+#ifdef __VMS
+typedef int npy_longlong;
+typedef unsigned int npy_ulonglong;
+#else
 typedef long npy_longlong;
 typedef unsigned long npy_ulonglong;
+#endif
 #  define NPY_LONGLONG_SUFFIX(x)  (x##L)
 #  define NPY_ULONGLONG_SUFFIX(x) (x##UL)
 #endif
@@ -373,13 +378,21 @@ typedef signed char npy_byte;
 typedef unsigned char npy_ubyte;
 typedef unsigned short npy_ushort;
 typedef unsigned int npy_uint;
+#ifdef __VMS
+typedef unsigned int npy_ulong;
+#else
 typedef unsigned long npy_ulong;
+#endif
 
 /* These are for completeness */
 typedef char npy_char;
 typedef short npy_short;
 typedef int npy_int;
+#ifdef __VMS
+typedef int npy_long;
+#else
 typedef long npy_long;
+#endif
 typedef float npy_float;
 typedef double npy_double;
 
@@ -509,8 +522,13 @@ typedef struct { npy_longdouble real, imag; } npy_clongdouble;
 #if NPY_BITSOF_LONG == 8
 #define NPY_INT8 NPY_LONG
 #define NPY_UINT8 NPY_ULONG
+#ifdef __VMS
+        typedef int npy_int8;
+        typedef unsigned int npy_uint8;
+#else
         typedef long npy_int8;
         typedef unsigned long npy_uint8;
+#endif
 #define PyInt8ScalarObject PyLongScalarObject
 #define PyInt8ArrType_Type PyLongArrType_Type
 #define PyUInt8ScalarObject PyULongScalarObject
@@ -520,8 +538,13 @@ typedef struct { npy_longdouble real, imag; } npy_clongdouble;
 #elif NPY_BITSOF_LONG == 16
 #define NPY_INT16 NPY_LONG
 #define NPY_UINT16 NPY_ULONG
+#ifdef __VMS
+        typedef int npy_int16;
+        typedef unsigned int npy_uint16;
+#else
         typedef long npy_int16;
         typedef unsigned long npy_uint16;
+#endif
 #define PyInt16ScalarObject PyLongScalarObject
 #define PyInt16ArrType_Type PyLongArrType_Type
 #define PyUInt16ScalarObject PyULongScalarObject
@@ -531,9 +554,15 @@ typedef struct { npy_longdouble real, imag; } npy_clongdouble;
 #elif NPY_BITSOF_LONG == 32
 #define NPY_INT32 NPY_LONG
 #define NPY_UINT32 NPY_ULONG
+#ifdef __VMS
+        typedef int npy_int32;
+        typedef unsigned int npy_uint32;
+        typedef unsigned int npy_ucs4;
+#else
         typedef long npy_int32;
         typedef unsigned long npy_uint32;
         typedef unsigned long npy_ucs4;
+#endif
 #define PyInt32ScalarObject PyLongScalarObject
 #define PyInt32ArrType_Type PyLongArrType_Type
 #define PyUInt32ScalarObject PyULongScalarObject

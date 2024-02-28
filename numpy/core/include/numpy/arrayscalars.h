@@ -29,7 +29,11 @@ typedef struct {
 
 typedef struct {
         PyObject_HEAD
+#ifdef __VMS
+        int obval;
+#else
         long obval;
+#endif
 } PyLongScalarObject;
 
 
@@ -59,7 +63,11 @@ typedef struct {
 
 typedef struct {
         PyObject_HEAD
+#ifdef __VMS
+        unsigned int obval;
+#else
         unsigned long obval;
+#endif
 } PyULongScalarObject;
 
 

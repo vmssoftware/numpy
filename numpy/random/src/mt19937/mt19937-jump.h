@@ -29,7 +29,11 @@ void set_coef(unsigned long *pf, unsigned int deg, unsigned long v);
  * These files are not part of NumPy.
  */
 
+#ifdef __VMS
+static const unsigned int poly_coef[624] = {
+#else
 static const unsigned long poly_coef[624] = {
+#endif
     1927166307UL, 3044056772UL, 2284297142UL, 2820929765UL, 651705945UL,
     69149273UL,   3892165397UL, 2337412983UL, 1219880790UL, 3207074517UL,
     3836784057UL, 189286826UL,  1049791363UL, 3916249550UL, 2942382547UL,
